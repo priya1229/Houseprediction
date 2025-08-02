@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>House Price Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://miro.medium.com/v2/resize:fit:1024/1*smf9XOCYX-7NuQSkE4m84g.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+
+    .card-overlay {
+      background: rgba(140, 139, 139, 0.17);
+      backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex justify-center items-center px-4">
+  <div class="w-full max-w-2xl p-8 rounded-2xl shadow-xl ring-1 ring-gray-200 card-overlay">
+    <h1 class="text-3xl font-bold mb-6 text-gray-900 flex items-center gap-2">🏠 House Price Predictor</h1>
+
+    <form method="POST" action="/predict" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <input type="number" step="any" name="GrLivArea" placeholder="Area (sq ft)" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70" />
+
+      <input type="number" name="BedroomAbvGr" placeholder="Bedrooms" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70" />
+
+      <select name="Neighborhood" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70">
+        <option value="">Select Neighborhood</option>
+        {% for n in neighborhoods %}
+        <option value="{{ n }}">{{ n }}</option>
+        {% endfor %}
+      </select>
+
+      <input type="number" name="OverallQual" placeholder="Overall Quality (1-10)" min="1" max="10" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70" />
+
+      <input type="number" name="YearBuilt" placeholder="Year Built" min="1800" max="2025" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70" />
+
+      <input type="number" name="FullBath" placeholder="Full Bathrooms" min="0" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70" />
+
+      <input type="number" name="GarageCars" placeholder="Garage Cars" min="0" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70" />
+
+      <input type="number" name="TotRmsAbvGrd" placeholder="Total Rooms" min="1" required
+        class="border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white/70" />
+
+      <div class="sm:col-span-2">
+        <button type="submit"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow transition">
+          Predict Price
+        </button>
+      </div>
+    </form>
+
+    {% if prediction_text %}
+    <div
+      class="mt-6 p-4 bg-blue-50/90 border border-blue-200 rounded text-blue-800 font-semibold flex items-center gap-2"
+      role="status" aria-live="polite">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4 -4" />
+      </svg>
+      <div>{{ prediction_text }}</div>
+    </div>
+    {% endif %}
+  </div>
+</body>
+
+</html>
